@@ -4,12 +4,10 @@ import 'dart:ui';
 import 'package:easy_download/screens/youtubeDownload/youtubeDownloader/services/getcommentyt.dart';
 import 'package:easy_download/screens/youtubeDownload/youtubeDownloader/services/getvidyt.dart';
 import 'package:easy_download/screens/youtubeDownload/youtubeDownloader/services/provider/ytprovider.dart';
-import 'package:easy_download/vdeo_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:easy_download/constants/appConstant.dart';
-import 'package:easy_download/constants/appTheme.dart';
 import 'package:easy_download/screens/navigationHomeScreen.dart';
 import 'package:provider/provider.dart';
 
@@ -143,6 +141,7 @@ class _WelcomeLogoState extends State<WelcomeLogo> {
                 'Easy Download',
                 style: TextStyle(
                   fontFamily: 'Billabong',
+                  color: Colors.white,
                   fontSize: 34,
                 ),
               ),
