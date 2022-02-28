@@ -1,9 +1,8 @@
+import 'package:easy_download/screens/youtubeDownload/youtubeDownloader/pages/home/youtube_homepage.dart';
 import 'package:flutter/widgets.dart';
-import 'package:easy_download/screens/facebookDownload/facebookDownloadScreen.dart';
-import 'package:easy_download/screens/instagramDownload/instagramDownloadScreen.dart';
-import 'package:easy_download/screens/tiktokDownload/tiktokDownloadScreen.dart';
+import 'package:easy_download/screens/facebookDownload/facebook_download_page.dart';
+import 'package:easy_download/screens/instagramDownload/instagram_download_page.dart';
 import 'package:easy_download/screens/whatsappDownload/whatsappDownloadScreen.dart';
-import 'package:easy_download/screens/youtubeDownload/youtubeDownloadScreen.dart';
 
 class HomeList {
   String title;
@@ -20,27 +19,22 @@ class HomeList {
     HomeList(
       title: 'Facebook',
       imagePath: 'assets/images/facebookLogo.png',
-      navigateScreen: FacebookDownload(),
+      navigateScreen: const FacebookDownload(),
     ),
     HomeList(
       title: 'WhatsApp',
       imagePath: 'assets/images/whatsappLogo.png',
-      navigateScreen: WhatsappDownload(),
+      navigateScreen: const WhatsappDownload(),
     ),
     HomeList(
       title: 'Instagram',
       imagePath: 'assets/images/instagramLogo.png',
-      navigateScreen: InstagramDownload(),
+      navigateScreen: const InstagramDownload(),
     ),
     HomeList(
       title: 'Youtube',
       imagePath: 'assets/images/youtubeLogo.png',
-      navigateScreen: YoutubeDownload(),
-    ),
-    HomeList(
-      title: 'Tiktok',
-      imagePath: 'assets/images/tiktokLogo.png',
-      navigateScreen: TiktokDownload(),
+      navigateScreen: const MyYoutubeHomePage(),
     ),
   ];
 }

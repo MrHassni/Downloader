@@ -63,6 +63,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.purple.shade50,
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -100,7 +101,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                   shape: BoxShape.circle,
                                   boxShadow: <BoxShadow>[
                                     BoxShadow(
-                                        color: AppTheme.grey.withOpacity(0.1),
+                                        color: AppTheme.myPurle.withOpacity(0.1),
                                         blurRadius: 4),
                                   ],
                                 ),
@@ -134,7 +135,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             ),
             Divider(
               height: 1,
-              color: AppTheme.grey.withOpacity(0.5),
+              color: AppTheme.myPurle.withOpacity(0.5),
             ),
             Expanded(
               child: ListView.builder(
@@ -148,7 +149,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
             ),
             Divider(
               height: 1,
-              color: AppTheme.grey.withOpacity(0.6),
+              color: AppTheme.myPurle.withOpacity(0.6),
             ),
             Column(
               children: <Widget>[

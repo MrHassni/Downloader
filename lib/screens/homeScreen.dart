@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:easy_download/constants/appTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:easy_download/constants/appConstant.dart';
@@ -69,6 +70,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.purple,
       body: FutureBuilder(
         future: getData(),
         builder: (context, snapshot) {
@@ -182,7 +184,7 @@ class HomeListView extends StatelessWidget {
           width: screenWidthSize(80, context),
           height: screenWidthSize(80, context),
           child: CircleAvatar(
-            backgroundColor: ThemeData.dark().scaffoldBackgroundColor,
+            backgroundColor: Colors.purple,
             child: ClipOval(
               child: Stack(
                 alignment: AlignmentDirectional.center,

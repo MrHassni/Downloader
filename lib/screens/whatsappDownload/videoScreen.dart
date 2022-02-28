@@ -70,7 +70,7 @@ class _WAVideoScreenState extends State<WAVideoScreen> {
                 return Column(
                   children: <Widget>[
                     Container(
-                      height: screenHeightSize(140, context),
+                      height: screenHeightSize(120, context),
                       decoration: BoxDecoration(
                         shape: BoxShape.rectangle,
                         color: Theme.of(context).primaryColor,
@@ -78,7 +78,7 @@ class _WAVideoScreenState extends State<WAVideoScreen> {
                       child: Stack(
                         children: <Widget>[
                           ProgressiveImage(
-                            placeholder: AssetImage('assets/images/placeholder_video.gif'),
+                            placeholder: const AssetImage('assets/images/placeholder_video.gif'),
                             thumbnail: FileImage(File(thumbnailPath)),
                             image: FileImage(File(thumbnailPath)),
                             width: double.infinity,

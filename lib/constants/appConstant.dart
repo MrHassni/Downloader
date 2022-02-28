@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 
 double screenHeightSize(double size, BuildContext context) {
@@ -10,14 +12,15 @@ double screenWidthSize(double size, BuildContext context) {
 
 Widget screenAppBar(String screenName) {
   return AppBar(
+    leading: Container(),
     title: Text(
       screenName,
       style: const TextStyle(
         fontFamily: 'Billabong',
-        fontSize: 34,
+        fontSize: 34,color: Colors.white
       ),
     ),
-    backgroundColor: ThemeData.dark().scaffoldBackgroundColor,
+    backgroundColor:Colors.purple,
     elevation: 0,
   );
 }
@@ -25,8 +28,8 @@ Widget screenAppBar(String screenName) {
 Widget mySnackBar(BuildContext context, String msg) {
   return SnackBar(
     content: Text(msg),
-    backgroundColor: Theme.of(context).accentColor,
-    duration: const Duration(seconds: 1),
+    backgroundColor: Theme.of(context).primaryColorDark,
+    duration: const Duration(seconds: 4),
   );
 }
 
@@ -51,7 +54,9 @@ class MyButton extends StatelessWidget {
             ? padding as EdgeInsetsGeometry
             : const EdgeInsets.all(15.0),
         child:
-            FittedBox(child: Text((text != null) ? text.toString() : "Button")),
+            FittedBox(child: Text((text != null) ? text.toString() : "Button",style: const TextStyle(
+              color: Colors.white
+            ),)),
       ),
       onPressed: onPressed,
     );

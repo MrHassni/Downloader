@@ -1,10 +1,9 @@
+import 'package:easy_download/screens/youtubeDownload/youtubeDownloader/pages/download/downloadpage.dart';
 import 'package:flutter/material.dart';
 import 'package:easy_download/constants/appConstant.dart';
-import 'package:easy_download/screens/facebookDownload/galleryScreen.dart';
-import 'package:easy_download/screens/instagramDownload/galleryScreen.dart';
-import 'package:easy_download/screens/tiktokDownload/galleryScreen.dart';
-import 'package:easy_download/screens/whatsappDownload/galleryScreen.dart';
-import 'package:easy_download/screens/youtubeDownload/galleryScreen.dart';
+import 'package:easy_download/screens/facebookDownload/fb_gallery.dart';
+import 'package:easy_download/screens/instagramDownload/insta_gallery.dart';
+import 'package:easy_download/screens/whatsappDownload/whatsapp_gallery.dart';
 
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({Key? key}) : super(key: key);
@@ -19,7 +18,7 @@ class _GalleryScreenState extends State<GalleryScreen> with TickerProviderStateM
   @override
   void initState() {
     super.initState();
-    _galleryTabController = TabController(length: 5, vsync: this);
+    _galleryTabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -31,6 +30,7 @@ class _GalleryScreenState extends State<GalleryScreen> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorDark,
       appBar: PreferredSize(preferredSize: const Size.fromHeight(50),
       child: screenAppBar('App Gallery')),
       body: SingleChildScrollView(
@@ -64,14 +64,6 @@ class _GalleryScreenState extends State<GalleryScreen> with TickerProviderStateM
                   padding: EdgeInsets.symmetric(vertical: 10.0),
                   child: Text('Facebook'),
                 ),
-                Padding(
-                  padding: EdgeInsets.symmetric(vertical: 10.0),
-                  child: Text('TikTok'),
-                ),
-                // Tab(
-                //   icon: Icon(Icons.photo_library),
-                //   text: 'IMAGES',
-                // ),
               ],
             ),
             const SizedBox(
@@ -81,12 +73,11 @@ class _GalleryScreenState extends State<GalleryScreen> with TickerProviderStateM
               height: screenHeightSize(650, context),
               child: TabBarView(
                 controller: _galleryTabController,
-                children: <Widget>[
+                children: const <Widget>[
                   WhatsappGallery(),
-                  YoutubeGallery(),
-                  InstagramGallery(),
-                  FacebookGallery(),
-                  TiktokGallery(),
+                  YoutubeDownloadPage(),
+                  InstaGallery(),
+                  FbGallery(),
                 ],
               ),
             ),

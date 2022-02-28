@@ -78,16 +78,16 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
       drawerIndex = drawerIndexData;
       if (drawerIndex == DrawerIndex.Home) {
         setState(() {
-          screenView = MyHomePage();
+          screenView = const MyHomePage();
         });
       } else if (drawerIndex == DrawerIndex.Gallery) {
         setState(() {
-          screenView = GalleryScreen();
+          screenView = const GalleryScreen();
         });
       } else if (drawerIndex == DrawerIndex.ShareApp) {
         setState(() {
           Share.share('Download Stories,Videos,Status and much more in One Click using EasyDownload App.\n Checkout the Link below also share it with your Friends.\n https://bit.ly/39y0mar');
-          screenView = MyHomePage();
+          screenView = const MyHomePage();
           drawerIndex = DrawerIndex.Home;
         });
       } else if (drawerIndex == DrawerIndex.RateApp) {
@@ -122,21 +122,21 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
 
         setState(() {
           drawerIndex = DrawerIndex.Home;
-          screenView = MyHomePage();
+          screenView = const MyHomePage();
         });
       } else if (drawerIndex == DrawerIndex.DonateUs) {
         String _donateUrl = 'https://www.buymeacoffee.com';
         _lauchUrl(_donateUrl);
         setState(() {
           drawerIndex = DrawerIndex.Home;
-          screenView = MyHomePage();
+          screenView = const MyHomePage();
         });
       } else if (drawerIndex == DrawerIndex.About) {
         String _donateUrl = 'https://www.linkedin.com/company/rb-sol/';
         _lauchUrl(_donateUrl);
         setState(() {
           drawerIndex = DrawerIndex.Home;
-          screenView = MyHomePage();
+          screenView = const MyHomePage();
         });
       } else {
         //do in your way......

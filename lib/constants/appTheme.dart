@@ -4,7 +4,8 @@ class AppTheme {
   AppTheme._();
 
   static const Color white = Color(0xFFFFFFFF);
-  static const Color grey = Color(0xFF3A5160);
+  static const Color myPurle = Colors.purple;
+  // Color(0xFF330033);
   static const String fontName = 'WorkSans';
 
   static const TextTheme textTheme = TextTheme(

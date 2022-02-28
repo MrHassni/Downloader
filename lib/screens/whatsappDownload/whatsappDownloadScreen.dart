@@ -67,7 +67,7 @@ class _WhatsappDownloadState extends State<WhatsappDownload> with TickerProvider
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Container(
-                  child: Image.asset("assets/images/whatsappLogo.png", scale: 5.0),
+                  child: Image.asset("assets/images/whatsappLogo.png", scale: 1.0),
                 ),
                 const Text(
                   ' WhatsApp Status\n   Dowloader',
