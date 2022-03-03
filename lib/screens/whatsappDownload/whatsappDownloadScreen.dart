@@ -20,7 +20,7 @@ class _WhatsappDownloadState extends State<WhatsappDownload> with TickerProvider
   final _scaffoldKey =  GlobalKey<ScaffoldState>();
 
   _loadthumb() async {
-    if (Directory("${_videoDir.path}").existsSync()) {
+    if (Directory(_videoDir.path).existsSync()) {
       var videoList = _videoDir.listSync().map((item) => item.path).where((item) => item.endsWith(".mp4")).toList(growable: false);
 
       for (var x in videoList) {
@@ -56,62 +56,56 @@ class _WhatsappDownloadState extends State<WhatsappDownload> with TickerProvider
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorDark,
       key: _scaffoldKey,
-      appBar: PreferredSize(preferredSize: Size.fromHeight(50),
+      appBar: PreferredSize(preferredSize: const Size.fromHeight(50),
       child: screenAppBar("WhatsApp Downloader")),
       body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         child: Column(
           children: <Widget>[
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Container(
-                  child: Image.asset("assets/images/whatsappLogo.png", scale: 1.0),
-                ),
+                Image.asset("assets/images/whatsappLogo.png", scale: 1.0),
                 const Text(
-                  ' WhatsApp Status\n   Dowloader',
+                  ' WhatsApp Status\n   Downloader',
                   style: TextStyle(
+                    color: Colors.white,
                     fontSize: 18,
                   ),
                 ),
               ],
             ),
-            Container(
-              child: TabBar(controller: _whatsappTabController, indicatorColor: Colors.blue, labelColor: Colors.blue, unselectedLabelColor: Colors.white, labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0), isScrollable: false, unselectedLabelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0), tabs: <Widget>[
-                Container(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.photo_library),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text('IMAGES'),
-                        ),
-                      ],
+            TabBar(controller: _whatsappTabController, indicatorColor: Colors.blue, labelColor: Colors.green, unselectedLabelColor: Colors.white, labelStyle: TextStyle(fontWeight: FontWeight.w500, fontSize: 14.0), isScrollable: false, unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.w500, fontSize: 12.0), tabs: <Widget>[
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const <Widget>[
+                    Icon(Icons.photo_library),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text('IMAGES'),
                     ),
-                  ),
+                  ],
                 ),
-                Container(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 15),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(Icons.live_tv),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text('VIDEOS'),
-                        ),
-                      ],
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const <Widget>[
+                    Icon(Icons.live_tv),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text('VIDEOS'),
                     ),
-                  ),
+                  ],
                 ),
-              ]),
-            ),
-            Container(
+              ),
+            ]),
+            SizedBox(
               height: screenHeightSize(400, context),
               child: TabBarView(
                 controller: _whatsappTabController,

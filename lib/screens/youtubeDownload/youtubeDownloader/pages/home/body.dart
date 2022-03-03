@@ -1,8 +1,8 @@
-
-import 'package:flutter/cupertino.dart';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 import '../../../../../constants/appConstant.dart';
 import '../../pages/results/results.dart';
@@ -23,6 +23,46 @@ final TextEditingController _urlController = TextEditingController();
 
   /// hislks
   final SearchTo _st = SearchTo.video;
+  final AdSize adSize = const AdSize(height: 100, width: 320);
+  late AdWidget adWidget;
+  bool _isBannerAdReady = false;
+
+  late BannerAd myBanner = BannerAd(
+    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    size: AdSize.	largeBanner,
+    request: const AdRequest(),
+    listener:  listener,
+  );
+
+  late BannerAdListener listener = BannerAdListener(
+    // Called when an ad is successfully received.
+    onAdLoaded: (Ad ad) {
+      log('Ad loaded.');
+      setState(() {
+        _isBannerAdReady = true;
+      });
+    },
+    // Called when an ad request failed.
+    onAdFailedToLoad: (Ad ad, LoadAdError error) {
+      // Dispose the ad here to free resources.
+      ad.dispose();
+      log('Ad failed to loaddd: $error');
+    },
+    // Called when an ad opens an overlay that covers the screen.
+    onAdOpened: (Ad ad) => log('Ad opened.'),
+    // Called when an ad removes an overlay that covers the screen.
+    onAdClosed: (Ad ad) => log('Ad closed.'),
+    // Called when an impression occurs on the ad.
+    onAdImpression: (Ad ad) => log('Ad impression.'),
+  );
+
+  @override
+  void initState() {
+    super.initState();
+    myBanner.load();
+    adWidget = AdWidget(ad: myBanner);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -40,6 +80,7 @@ final TextEditingController _urlController = TextEditingController();
                 ' YouTube\n   Downloader',
                 style: TextStyle(
                   fontSize: 18,
+                  color: Colors.white
                 ),
               ),
             ],
@@ -54,6 +95,7 @@ final TextEditingController _urlController = TextEditingController();
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 10),
                 child: TextField(
+                  style: const TextStyle(color: Colors.white),
                   maxLines: 1,
                   controller: _urlController,
                   decoration: InputDecoration(
@@ -72,6 +114,7 @@ final TextEditingController _urlController = TextEditingController();
                       borderSide:  BorderSide(color: Theme.of(context).primaryColorLight, width: 1.0),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
+                    hintStyle: const TextStyle(color: Colors.grey),
                     hintText: _myTitle,
                   ),
 
@@ -138,6 +181,12 @@ final TextEditingController _urlController = TextEditingController();
               //     ),
               //   ),
               // )
+              _isBannerAdReady ? Container(
+                alignment: Alignment.bottomCenter,
+                child: adWidget,
+                width: myBanner.size.width.toDouble(),
+                height: myBanner.size.height.toDouble(),
+              ) : Container(),
             ],
           )
         ],

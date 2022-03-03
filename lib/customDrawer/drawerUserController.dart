@@ -193,6 +193,7 @@ class _DrawerUserControllerState extends State<DrawerUserController>
                                 child: Center(
                                   child: widget.menuView ?? AnimatedIcon(
                                           icon: widget.animatedIconData ,
+                                          color: Colors.transparent,
                                           progress: iconAnimationController),
                                 ),
                                 onTap: () {

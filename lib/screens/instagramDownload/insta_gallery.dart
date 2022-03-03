@@ -18,13 +18,17 @@ class InstaGallery extends StatefulWidget {
 class _InstaGalleryState extends State<InstaGallery> {
 
   ChewieController? _chewieController;
-  var fileList = dir.listSync();
+  var fileList;
   late final _videoPlayerControllers = List<VideoPlayerController>.empty(growable: true);
   late final _chewieControllers = List<ChewieController>.empty(growable: true);
 
   @override
   void initState() {
     super.initState();
+    if (!dir.existsSync()) {
+      dir.createSync(recursive: true);
+    }
+    fileList= dir.listSync();
     getData();
   }
 
@@ -135,16 +139,14 @@ class _InstaGalleryState extends State<InstaGallery> {
                   );
                 }));
       } else {
-        return Scaffold(
-          body: Center(
+        return Center(
             child: Container(
                 padding: const EdgeInsets.only(bottom: 60.0),
                 child: const Text(
                   'Sorry, No Downloads Found!',
-                  style: TextStyle(fontSize: 18.0),
+                  style: TextStyle(fontSize: 18.0,),
                 )),
-          ),
-        );
+          );
       }
     }
   }

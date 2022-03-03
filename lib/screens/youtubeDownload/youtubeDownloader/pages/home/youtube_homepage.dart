@@ -15,10 +15,11 @@ class MyYoutubeHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).primaryColorDark,
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
           preferredSize: const Size.fromHeight(50),
-          child: screenAppBar("YouTube Downloader")),
+          child: screenAppBar("YouTube Downloader",)),
       // appBar: myAppBar(
       //   context,
       //   'Youtube Downloader',

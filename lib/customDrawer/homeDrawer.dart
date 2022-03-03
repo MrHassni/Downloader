@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/services.dart';
 import 'package:easy_download/constants/appTheme.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 class HomeDrawer extends StatefulWidget {
   final AnimationController? iconAnimationController;
   final DrawerIndex? screenIndex;
   final Function(DrawerIndex)? callBackIndex;
+
   const HomeDrawer(
       {Key? key,
       this.screenIndex,
@@ -19,9 +23,44 @@ class HomeDrawer extends StatefulWidget {
 
 class _HomeDrawerState extends State<HomeDrawer> {
   late List<DrawerList> drawerList;
+  final AdSize adSize = const AdSize(height: 100, width: 320);
+  late AdWidget adWidget;
+  bool _isBannerAdReady = false;
+
+  late BannerAd myBanner = BannerAd(
+    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    size: AdSize.	largeBanner,
+    request: const AdRequest(),
+    listener:  listener,
+  );
+
+  late BannerAdListener listener = BannerAdListener(
+    // Called when an ad is successfully received.
+    onAdLoaded: (Ad ad) {
+      log('Ad loaded.');
+      setState(() {
+        _isBannerAdReady = true;
+      });
+      },
+    // Called when an ad request failed.
+    onAdFailedToLoad: (Ad ad, LoadAdError error) {
+      // Dispose the ad here to free resources.
+      ad.dispose();
+      log('Ad failed to loaddd: $error');
+    },
+    // Called when an ad opens an overlay that covers the screen.
+    onAdOpened: (Ad ad) => log('Ad opened.'),
+    // Called when an ad removes an overlay that covers the screen.
+    onAdClosed: (Ad ad) => log('Ad closed.'),
+    // Called when an impression occurs on the ad.
+    onAdImpression: (Ad ad) => log('Ad impression.'),
+  );
+
   @override
   void initState() {
     setDrawerListArray();
+    myBanner.load();
+    adWidget = AdWidget(ad: myBanner);
     super.initState();
   }
 
@@ -34,7 +73,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
       ),
       DrawerList(
         index: DrawerIndex.Gallery,
-        labelName: 'Galley',
+        labelName: 'Gallery',
         icon: const Icon(Icons.wallpaper),
       ),
       DrawerList(
@@ -63,7 +102,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.purple.shade50,
+      backgroundColor: Colors.blueGrey.shade100,
       body: Center(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -82,11 +121,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       AnimatedBuilder(
                         animation: widget.iconAnimationController!,
                         builder: (BuildContext context, Widget? child) {
-                          return  ScaleTransition(
-                            scale:  AlwaysStoppedAnimation(1.0 -
+                          return ScaleTransition(
+                            scale: AlwaysStoppedAnimation(1.0 -
                                 (widget.iconAnimationController!.value) * 0.2),
                             child: RotationTransition(
-                              turns:  AlwaysStoppedAnimation(
+                              turns: AlwaysStoppedAnimation(
                                   Tween(begin: 0.0, end: 24.0)
                                           .animate(CurvedAnimation(
                                               parent: widget
@@ -101,14 +140,16 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                   shape: BoxShape.circle,
                                   boxShadow: <BoxShadow>[
                                     BoxShadow(
-                                        color: AppTheme.myPurle.withOpacity(0.1),
+                                        color:
+                                            AppTheme.myPurle.withOpacity(0.1),
                                         blurRadius: 4),
                                   ],
                                 ),
                                 child: ClipRRect(
-                                  borderRadius:
-                                      const BorderRadius.all(Radius.circular(60.0)),
-                                  child: Image.asset("assets/images/appLogo.png"),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(60.0)),
+                                  child:
+                                      Image.asset("assets/images/appLogo.png"),
                                 ),
                               ),
                             ),
@@ -153,21 +194,28 @@ class _HomeDrawerState extends State<HomeDrawer> {
             ),
             Column(
               children: <Widget>[
+               _isBannerAdReady ? Container(
+                  alignment: Alignment.center,
+                  child: adWidget,
+                  width: myBanner.size.width.toDouble(),
+                  height: myBanner.size.height.toDouble(),
+                ) : Container(),
                 ListTile(
-                  title:  const Text(
+                  title: const Text(
                     "Exit",
-                    style:  TextStyle(
+                    style: TextStyle(
                       fontFamily: AppTheme.fontName,
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
                     ),
                     textAlign: TextAlign.left,
                   ),
-                  trailing:  const Icon(
+                  trailing: const Icon(
                     Icons.power_settings_new,
                     color: Colors.red,
                   ),
                   onTap: () {
+                    // myBanner.load();
                     SystemNavigator.pop();
                   },
                 ),
@@ -224,16 +272,16 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                   ? Colors.blue
                                   : Theme.of(context).iconTheme.color),
                         )
-                      :  Icon(listData.icon.icon,
+                      : Icon(listData.icon.icon,
                           color: widget.screenIndex == listData.index
                               ? Colors.blue
                               : Theme.of(context).iconTheme.color),
                   const Padding(
                     padding: EdgeInsets.all(4.0),
                   ),
-                   Text(
+                  Text(
                     listData.labelName,
-                    style:  TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: widget.screenIndex == listData.index
@@ -265,7 +313,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                             height: 46,
                             decoration: BoxDecoration(
                               color: Colors.blue.withOpacity(0.2),
-                              borderRadius:  const BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(0),
                                 topRight: Radius.circular(28),
                                 bottomLeft: Radius.circular(0),
@@ -275,8 +323,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                           ),
                         ),
                       );
-                    }
-                  )
+                    })
                 : const SizedBox()
           ],
         ),

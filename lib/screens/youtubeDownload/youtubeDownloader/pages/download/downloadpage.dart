@@ -25,18 +25,23 @@ class _YoutubeDownloadPageState extends State<YoutubeDownloadPage> {
   final List<bool> _isImage = [];
 
   ChewieController? _chewieController;
-  var fileList = dir.listSync();
+  var fileList;
   late final _videoPlayerControllers = List<VideoPlayerController>.empty(growable: true);
   late final _chewieControllers = List<ChewieController>.empty(growable: true);
 
   @override
   void initState() {
     super.initState();
-    if (dir.existsSync()) {
-      _checkType();
+    if (!dir.existsSync()) {
+      dir.createSync(recursive: true);
+
     }
+    fileList = dir.listSync();
     getData();
+    _checkType();
   }
+
+
 
   @override
   void dispose() {
@@ -160,8 +165,8 @@ class _YoutubeDownloadPageState extends State<YoutubeDownloadPage> {
                                                       fit: StackFit.expand,
                                                       children: [
                                                         AspectRatio(
-                                                            aspectRatio: _videoPlayerControllers[index].value.aspectRatio,
-                                                            child: Chewie(controller: _chewieControllers[index],)),
+                                                            aspectRatio: _videoPlayerControllers[_isImage.isEmpty ? index :  index + 1 - _isImage.length].value.aspectRatio,
+                                                            child: Chewie(controller: _chewieControllers[_isImage.isEmpty ? index :  index + 1 - _isImage.length],)),
                                                       ],
                                                     ),
                                                   );
@@ -180,16 +185,14 @@ class _YoutubeDownloadPageState extends State<YoutubeDownloadPage> {
                       }),
                 ));
           } else {
-            return Scaffold(
-              body: Center(
+            return Center(
                 child:  Container(
                     padding: const EdgeInsets.only(bottom: 60.0),
                     child: const Text(
                       'Sorry, No Downloads Found!',
                       style: TextStyle(fontSize: 18.0),
                     )),
-              ),
-            );
+              );
           }
         }
       }(),

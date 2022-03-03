@@ -1,6 +1,3 @@
-import 'dart:isolate';
-import 'dart:ui';
-
 import 'package:easy_download/screens/youtubeDownload/youtubeDownloader/services/getcommentyt.dart';
 import 'package:easy_download/screens/youtubeDownload/youtubeDownloader/services/getvidyt.dart';
 import 'package:easy_download/screens/youtubeDownload/youtubeDownloader/services/provider/ytprovider.dart';
@@ -9,10 +6,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:easy_download/constants/appConstant.dart';
 import 'package:easy_download/screens/navigationHomeScreen.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await FlutterDownloader.initialize(debug: true // optional: set false to disable printing logs to console
       );
@@ -31,20 +30,32 @@ void main() async {
         create: (BuildContext context) => YoutubeDownloadProvider(),
       ),
     ],
-    child: const MyApp(),
+    child:  MyApp(),
   ),);
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+   MyApp({Key? key}) : super(key: key);
+  final Map<int, Color> _blue = {
+    50:  const Color(0xFFe8e8ea),
+    100: const Color(0xFFd1d2d6),
+    200: const Color(0xFFbbbbc1),
+    300: const Color(0xFFa4a5ad),
+    400: const Color(0xFF8e8e99),
+    500: const Color(0xFF777884),
+    600: const Color(0xFF606170),
+    700: const Color(0xFF4a4a5b),
+    800: const Color(0xFF333447),
+    900: const Color(0xFF1D1E33),
+  };
 
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
       title: 'Easy Download',
       theme: ThemeData(
-        primaryColor: Colors.purple,
-            primarySwatch: Colors.purple
+        // primaryColor: const Color(0xFF1D1E33),
+            primarySwatch:  MaterialColor(0xFF1D1E33,_blue)
       ),
       // theme: ThemeData.dark().copyWith(
       //   textTheme: AppTheme.textTheme,
@@ -69,7 +80,7 @@ class _WelcomeLogoState extends State<WelcomeLogo> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 1), () {
       Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const NavigationHomeScreen()));
     });
   }
@@ -125,7 +136,7 @@ class _WelcomeLogoState extends State<WelcomeLogo> {
       padding: const EdgeInsets.all(8.0),
       child: Center(
         child: Scaffold(
-          backgroundColor:  Colors.purple,
+          backgroundColor:  const Color(0xFF1D1E33),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -148,6 +159,7 @@ class _WelcomeLogoState extends State<WelcomeLogo> {
               const Text(
                 'Download in One Click',
                 style: TextStyle(
+                  color: Colors.white,
                   fontSize: 18,
                 ),
               ),

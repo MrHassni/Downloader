@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:external_path/external_path.dart';
 import 'package:rate_my_app/rate_my_app.dart';
 import 'package:easy_download/customDrawer/homeDrawer.dart';
 import 'package:easy_download/customDrawer/drawerUserController.dart';
@@ -44,6 +45,9 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
     }
   }
 
+
+
+
   @override
   void initState() {
     drawerIndex = DrawerIndex.Home;
@@ -86,7 +90,7 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
         });
       } else if (drawerIndex == DrawerIndex.ShareApp) {
         setState(() {
-          Share.share('Download Stories,Videos,Status and much more in One Click using EasyDownload App.\n Checkout the Link below also share it with your Friends.\n https://bit.ly/39y0mar');
+          Share.share('Download Stories,Videos,Status and much more in One Click using EasyDownload App.\n Checkout the Link below also share it with your Friends.\n https://');
           screenView = const MyHomePage();
           drawerIndex = DrawerIndex.Home;
         });

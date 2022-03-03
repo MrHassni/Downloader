@@ -36,7 +36,7 @@ class _WAImageScreenState extends State<WAImageScreen> {
   @override
   Widget build(BuildContext context) {
     if (!Directory("${_photoDir.path}").existsSync()) {
-      return Center(
+      return const Center(
         child: Text(
           "Install WhatsApp Now\nYour Friend's Status Will Be Available Here",
           style: TextStyle(fontSize: 18.0),
@@ -80,7 +80,7 @@ class _WAImageScreenState extends State<WAImageScreen> {
                 ],
               );
             },
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 3,
               mainAxisSpacing: 5.0,
               crossAxisSpacing: 10.0,
@@ -89,16 +89,14 @@ class _WAImageScreenState extends State<WAImageScreen> {
           ),
         );
       } else {
-        return Scaffold(
-          body: Center(
-            child: new Container(
-                padding: EdgeInsets.only(bottom: 60.0),
-                child: Text(
+        return Center(
+            child: Container(
+                padding: const EdgeInsets.only(bottom: 60.0),
+                child: const Text(
                   'Sorry, No Image Found!',
-                  style: TextStyle(fontSize: 18.0),
+                  style: TextStyle(fontSize: 18.0,),
                 )),
-          ),
-        );
+          );
       }
     }
   }

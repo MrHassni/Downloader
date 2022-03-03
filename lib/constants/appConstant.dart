@@ -12,7 +12,7 @@ double screenWidthSize(double size, BuildContext context) {
 
 Widget screenAppBar(String screenName) {
   return AppBar(
-    leading: Container(),
+    leading: screenName == "Instagram Downloader" ||screenName == "Facebook Downloader" || screenName == "WhatsApp Downloader" || screenName == "YouTube Downloader" ? Container() : const Icon(Icons.menu),
     title: Text(
       screenName,
       style: const TextStyle(
@@ -20,7 +20,7 @@ Widget screenAppBar(String screenName) {
         fontSize: 34,color: Colors.white
       ),
     ),
-    backgroundColor:Colors.purple,
+    backgroundColor:const Color(0xFF1D1E33),
     elevation: 0,
   );
 }
@@ -46,6 +46,8 @@ class MyButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(15.0) ),
       color: (color != null) ? color : Theme.of(context).primaryColor,
       highlightColor: Theme.of(context).accentColor,
       disabledColor: Theme.of(context).primaryColor,

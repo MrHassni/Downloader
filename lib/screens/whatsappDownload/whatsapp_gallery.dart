@@ -18,18 +18,25 @@ class _WhatsappGalleryState extends State<WhatsappGallery> {
   final List<bool> _isImage = [];
 
   ChewieController? _chewieController;
-  var fileList = dir.listSync();
+  late List fileList ;
   late final _videoPlayerControllers = List<VideoPlayerController>.empty(growable: true);
   late final _chewieControllers = List<ChewieController>.empty(growable: true);
 
   @override
   void initState() {
     super.initState();
-    if (dir.existsSync()) {
+
+    if (!dir.existsSync()) {
+      dir.createSync(recursive: true);
       _checkType();
     }
+    fileList= dir.listSync();
+
     getData();
+    _checkType();
   }
+
+
 
   @override
   void dispose() {
@@ -45,8 +52,9 @@ class _WhatsappGalleryState extends State<WhatsappGallery> {
     log('        bb       ' + fileList.length.toString());
     for (int i = 0; i < fileList.length; i++) {
       _videoPlayerControllers
-          .add(VideoPlayerController.file(File(fileList[i].path))
+          .add(VideoPlayerController.file(File(fileList[i].path),)
         ..initialize().then((_) {
+          _videoPlayerControllers[i].pause();
           _chewieControllers.add(ChewieController(
               aspectRatio: _videoPlayerControllers[i].value.aspectRatio,
               autoInitialize: true,
@@ -90,6 +98,7 @@ class _WhatsappGalleryState extends State<WhatsappGallery> {
       );
     } else {
       var fileList = dir.listSync();
+      log(fileList[1].toString() + '    mmmmmmmmm      ');
       if (fileList.isNotEmpty) {
         return Center(
                 child: SizedBox(
@@ -102,20 +111,65 @@ class _WhatsappGalleryState extends State<WhatsappGallery> {
                           mainAxisSpacing: 5, crossAxisCount: 3),
                       itemCount: fileList.length,
                       itemBuilder: (BuildContext ctx, index) {
+                        print(index.toString() + '      nnnnnnnnnn       ');
                         return
                           _isImage[index]
-                              ? Container(
+                              ? InkWell(
+                            onTap: (){
+                              Navigator.of(context)
+                                  .push(
+                                PageRouteBuilder(
+                                  opaque: false,
+                                  settings: const RouteSettings(),
+                                  pageBuilder: (
+                                      BuildContext context,
+                                      Animation<double> animation,
+                                      Animation<double> secondaryAnimation,
+                                      ) {
+                                    return Scaffold(
+                                        backgroundColor: Theme.of(context).primaryColorDark,
+                                        resizeToAvoidBottomInset: false,
+                                        body: SafeArea(
+                                          child: Dismissible(
+                                              key: const Key('key'),
+                                              direction: DismissDirection.vertical,
+                                              onDismissed: (_) =>
+                                                  Navigator.of(context).pop(),
+                                              child: OrientationBuilder(
+                                                builder: (context, orientation) {
+                                                  return Center(
+                                                    child: Stack(
+                                                      fit: StackFit.expand,
+                                                      children: [
+                                                        AspectRatio(
+                                                            aspectRatio: _videoPlayerControllers[index].value.aspectRatio,
+                                                            child: Image.file(
+                                                              fileList[index] as  File,
+                                                              fit: BoxFit.fitWidth,
+                                                            ),),
+                                                      ],
+                                                    ),
+                                                  );
+                                                },
+                                              )),
+                                        ));
+                                  },
+                                ),
+                              );
+                            },
+                                child: Container(
                             height: screenWidthSize(120, context),
                             width: screenWidthSize(120, context),
                             decoration: BoxDecoration(
-                              shape: BoxShape.rectangle,
-                              color: Theme.of(context).primaryColor,
+                                shape: BoxShape.rectangle,
+                                color: Theme.of(context).primaryColor,
                             ),
                             child: Image.file(
-                              fileList[index] as  File,
-                              fit: BoxFit.fitWidth,
+                                fileList[index] as  File,
+                                fit: BoxFit.fitWidth,
                             ),
-                          )
+                          ),
+                              )
                               : InkWell(
                           onTap: () {
                             Navigator.of(context)
@@ -128,6 +182,7 @@ class _WhatsappGalleryState extends State<WhatsappGallery> {
                                     Animation<double> animation,
                                     Animation<double> secondaryAnimation,
                                     ) {
+                                  log(index.toString() + '.....................................................');
                                   return Scaffold(
                                       backgroundColor: Theme.of(context).primaryColorDark,
                                       resizeToAvoidBottomInset: false,
@@ -144,8 +199,8 @@ class _WhatsappGalleryState extends State<WhatsappGallery> {
                                                     fit: StackFit.expand,
                                                     children: [
                                                       AspectRatio(
-                                                          aspectRatio: _videoPlayerControllers[index].value.aspectRatio,
-                                                          child: Chewie(controller: _chewieControllers[index],)),
+                                                          aspectRatio: _videoPlayerControllers[ _isImage.isEmpty ? index :  index + 1 - _isImage.length].value.aspectRatio,
+                                                          child: Chewie(controller: _chewieControllers[_isImage.isEmpty ? index : index + 1 - _isImage.length],)),
                                                     ],
                                                   ),
                                                 );
@@ -164,16 +219,14 @@ class _WhatsappGalleryState extends State<WhatsappGallery> {
                       }),
                 ));
       } else {
-        return Scaffold(
-          body: Center(
+        return  Center(
             child:  Container(
                 padding: const EdgeInsets.only(bottom: 60.0),
                 child: const Text(
                   'Sorry, No Downloads Found!',
                   style: TextStyle(fontSize: 18.0),
                 )),
-          ),
-        );
+          );
       }
     }
   }

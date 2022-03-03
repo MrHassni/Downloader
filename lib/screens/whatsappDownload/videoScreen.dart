@@ -9,7 +9,7 @@ Directory thumbDir = Directory('/storage/emulated/0/.easydownload/.thumbs/');
 
 class WAVideoScreen extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
-  WAVideoScreen({Key? key, required this.scaffoldKey}) : super(key: key);
+  const WAVideoScreen({Key? key, required this.scaffoldKey}) : super(key: key);
 
   @override
   _WAVideoScreenState createState() => _WAVideoScreenState();
@@ -47,8 +47,8 @@ class _WAVideoScreenState extends State<WAVideoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    if (!Directory("${_videoDir.path}").existsSync()) {
-      return Center(
+    if (!Directory(_videoDir.path).existsSync()) {
+      return const Center(
         child: Text(
           "Install WhatsApp\nYour Friend's Status will be available here.",
           style: TextStyle(fontSize: 18.0),
@@ -58,10 +58,10 @@ class _WAVideoScreenState extends State<WAVideoScreen> {
       var videoList = _videoDir.listSync().map((item) => item.path).where((item) => item.endsWith(".mp4")).toList(growable: false);
 
       if (videoList != null) {
-        if (videoList.length > 0) {
+        if (videoList.isNotEmpty) {
           return Container(
-            padding: EdgeInsets.only(bottom: 30.0),
-            margin: EdgeInsets.all(8.0),
+            padding: const EdgeInsets.only(bottom: 30.0),
+            margin: const EdgeInsets.all(8.0),
             child: GridView.builder(
               itemCount: videoList.length,
               itemBuilder: (context, index) {
@@ -85,7 +85,7 @@ class _WAVideoScreenState extends State<WAVideoScreen> {
                             height: double.infinity,
                             fit: BoxFit.cover,
                           ),
-                          Align(
+                          const Align(
                             alignment: Alignment.topCenter,
                             child: Padding(
                               padding: EdgeInsets.all(4.0),
@@ -96,10 +96,10 @@ class _WAVideoScreenState extends State<WAVideoScreen> {
                       ),
                     ),
                     Padding(
-                      padding: EdgeInsets.only(top: 5.0),
+                      padding: const EdgeInsets.only(top: 5.0),
                       child: MyButton(
                         text: 'Download',
-                        padding: EdgeInsets.all(5.0),
+                        padding: const EdgeInsets.all(5.0),
                         color: Theme.of(context).accentColor,
                         onPressed: () {
                           tmpThumbnail = thumbnailPath;

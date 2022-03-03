@@ -15,13 +15,17 @@ class FbGallery extends StatefulWidget {
 
 class _FbGalleryState extends State<FbGallery> {
   ChewieController? _chewieController;
-  var fileList = dir.listSync();
+  var fileList ;
   late final _videoPlayerControllers = List<VideoPlayerController>.empty(growable: true);
   late final _chewieControllers = List<ChewieController>.empty(growable: true);
 
   @override
   void initState() {
     super.initState();
+    if (!dir.existsSync()) {
+      dir.createSync(recursive: true);
+    }
+    fileList = dir.listSync();
     getData();
   }
 
@@ -132,16 +136,14 @@ class _FbGalleryState extends State<FbGallery> {
                   );
                 }));
       } else {
-        return Scaffold(
-          body: Center(
+        return Center(
             child: Container(
                 padding: const EdgeInsets.only(bottom: 60.0),
                 child: const Text(
                   'Sorry, No Downloads Found!',
                   style: TextStyle(fontSize: 18.0),
                 )),
-          ),
-        );
+          );
       }
     }
   }
