@@ -74,7 +74,7 @@ class _FbGalleryState extends State<FbGallery> {
       return const Center(
         child: Text(
           'Sorry, No Downloads Found!',
-          style: TextStyle(fontSize: 18.0),
+          style: TextStyle(fontSize: 18.0,color: Colors.white),
         ),
       );
     } else {
@@ -141,7 +141,7 @@ class _FbGalleryState extends State<FbGallery> {
                 padding: const EdgeInsets.only(bottom: 60.0),
                 child: const Text(
                   'Sorry, No Downloads Found!',
-                  style: TextStyle(fontSize: 18.0),
+                  style: TextStyle(fontSize: 18.0,color: Colors.white),
                 )),
           );
       }

@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:easy_download/screens/navigationHomeScreen.dart';
+import 'package:easy_download/screens/onboardingScreen/on_boarding_screen.dart';
 import 'package:easy_download/screens/youtubeDownload/youtubeDownloader/services/getcommentyt.dart';
 import 'package:easy_download/screens/youtubeDownload/youtubeDownloader/services/getvidyt.dart';
 import 'package:easy_download/screens/youtubeDownload/youtubeDownloader/services/provider/ytprovider.dart';
@@ -5,12 +9,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_downloader/flutter_downloader.dart';
 import 'package:easy_download/constants/appConstant.dart';
-import 'package:easy_download/screens/navigationHomeScreen.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
+
+int? isviewed;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  isviewed = prefs.getInt('onBoard');
   MobileAds.instance.initialize();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
   await FlutterDownloader.initialize(debug: true // optional: set false to disable printing logs to console
@@ -54,15 +62,9 @@ class MyApp extends StatelessWidget {
     return  MaterialApp(
       title: 'Easy Download',
       theme: ThemeData(
-        // primaryColor: const Color(0xFF1D1E33),
             primarySwatch:  MaterialColor(0xFF1D1E33,_blue)
       ),
-      // theme: ThemeData.dark().copyWith(
-      //   textTheme: AppTheme.textTheme,
-      //   textSelectionColor: Colors.purple,
-      //   textSelectionHandleColor: Colors.purple,
-      //   platform: TargetPlatform.iOS, colorScheme: ColorScheme.fromSwatch().copyWith(secondary: Colors.purple),
-      // ),
+
       debugShowCheckedModeBanner: false,
       home: const WelcomeLogo(),
     );
@@ -81,7 +83,8 @@ class _WelcomeLogoState extends State<WelcomeLogo> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 1), () {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const NavigationHomeScreen()));
+      log(isviewed.toString());
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>  isviewed != 0 ?  const OnBoardingScreen() : const NavigationHomeScreen()));
     });
   }
 

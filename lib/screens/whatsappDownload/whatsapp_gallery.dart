@@ -16,6 +16,8 @@ class WhatsappGallery extends StatefulWidget {
 
 class _WhatsappGalleryState extends State<WhatsappGallery> {
   final List<bool> _isImage = [];
+  final List<String> _image = [];
+  final List<String> _video = [];
 
   ChewieController? _chewieController;
   late List fileList ;
@@ -80,10 +82,13 @@ class _WhatsappGalleryState extends State<WhatsappGallery> {
   void _checkType() {
     for (var item in dir.listSync()) {
       if (item.toString().endsWith(".jpg'")) {
+        _image.add(item.path);
         _isImage.add(true);
       } else {
+        _video.add(item.path);
         _isImage.add(false);
       }
+
     }
   }
 
@@ -93,130 +98,136 @@ class _WhatsappGalleryState extends State<WhatsappGallery> {
       return const Center(
         child: Text(
           'Sorry, No Downloads Found!',
-          style: TextStyle(fontSize: 18.0),
+          style: TextStyle(fontSize: 18.0,color: Colors.white),
         ),
       );
     } else {
       var fileList = dir.listSync();
-      log(fileList[1].toString() + '    mmmmmmmmm      ');
       if (fileList.isNotEmpty) {
         return Center(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height,
-                  child: GridView.builder(
-                      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                        // mainAxisExtent: MediaQuery.of(context).size.width * 0.7,
-                          childAspectRatio: 4 / 6,
-                          crossAxisSpacing: 5,
-                          mainAxisSpacing: 5, crossAxisCount: 3),
-                      itemCount: fileList.length,
-                      itemBuilder: (BuildContext ctx, index) {
-                        print(index.toString() + '      nnnnnnnnnn       ');
-                        return
-                          _isImage[index]
-                              ? InkWell(
-                            onTap: (){
-                              Navigator.of(context)
-                                  .push(
-                                PageRouteBuilder(
-                                  opaque: false,
-                                  settings: const RouteSettings(),
-                                  pageBuilder: (
-                                      BuildContext context,
-                                      Animation<double> animation,
-                                      Animation<double> secondaryAnimation,
-                                      ) {
-                                    return Scaffold(
-                                        backgroundColor: Theme.of(context).primaryColorDark,
-                                        resizeToAvoidBottomInset: false,
-                                        body: SafeArea(
-                                          child: Dismissible(
-                                              key: const Key('key'),
-                                              direction: DismissDirection.vertical,
-                                              onDismissed: (_) =>
-                                                  Navigator.of(context).pop(),
-                                              child: OrientationBuilder(
-                                                builder: (context, orientation) {
-                                                  return Center(
-                                                    child: Stack(
-                                                      fit: StackFit.expand,
-                                                      children: [
-                                                        AspectRatio(
-                                                            aspectRatio: _videoPlayerControllers[index].value.aspectRatio,
-                                                            child: Image.file(
-                                                              fileList[index] as  File,
-                                                              fit: BoxFit.fitWidth,
-                                                            ),),
-                                                      ],
-                                                    ),
-                                                  );
-                                                },
-                                              )),
-                                        ));
-                                  },
-                                ),
-                              );
-                            },
-                                child: Container(
-                            height: screenWidthSize(120, context),
-                            width: screenWidthSize(120, context),
-                            decoration: BoxDecoration(
-                                shape: BoxShape.rectangle,
-                                color: Theme.of(context).primaryColor,
-                            ),
-                            child: Image.file(
-                                fileList[index] as  File,
-                                fit: BoxFit.fitWidth,
-                            ),
-                          ),
-                              )
-                              : InkWell(
-                          onTap: () {
-                            Navigator.of(context)
-                                .push(
-                              PageRouteBuilder(
-                                opaque: false,
-                                settings: const RouteSettings(),
-                                pageBuilder: (
-                                    BuildContext context,
-                                    Animation<double> animation,
-                                    Animation<double> secondaryAnimation,
-                                    ) {
-                                  log(index.toString() + '.....................................................');
-                                  return Scaffold(
-                                      backgroundColor: Theme.of(context).primaryColorDark,
-                                      resizeToAvoidBottomInset: false,
-                                      body: SafeArea(
-                                        child: Dismissible(
-                                            key: const Key('key'),
-                                            direction: DismissDirection.vertical,
-                                            onDismissed: (_) =>
-                                                Navigator.of(context).pop(),
-                                            child: OrientationBuilder(
-                                              builder: (context, orientation) {
-                                                return Center(
-                                                  child: Stack(
-                                                    fit: StackFit.expand,
-                                                    children: [
-                                                      AspectRatio(
-                                                          aspectRatio: _videoPlayerControllers[ _isImage.isEmpty ? index :  index + 1 - _isImage.length].value.aspectRatio,
-                                                          child: Chewie(controller: _chewieControllers[_isImage.isEmpty ? index : index + 1 - _isImage.length],)),
-                                                    ],
-                                                  ),
-                                                );
-                                              },
-                                            )),
-                                      ));
+                child: Column(
+                  children: [
+
+                    SizedBox(),
+
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height,
+                      child: GridView.builder(
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            // mainAxisExtent: MediaQuery.of(context).size.width * 0.7,
+                              childAspectRatio: 4 / 6,
+                              crossAxisSpacing: 5,
+                              mainAxisSpacing: 5, crossAxisCount: 3),
+                          itemCount: fileList.length,
+                          itemBuilder: (BuildContext ctx, index) {
+                            print(index.toString() + '      nnnnnnnnnn       ');
+                            return
+                              _isImage[index]
+                                  ? InkWell(
+                                onTap: (){
+                                  Navigator.of(context)
+                                      .push(
+                                    PageRouteBuilder(
+                                      opaque: false,
+                                      settings: const RouteSettings(),
+                                      pageBuilder: (
+                                          BuildContext context,
+                                          Animation<double> animation,
+                                          Animation<double> secondaryAnimation,
+                                          ) {
+                                        return Scaffold(
+                                            backgroundColor: Theme.of(context).primaryColorDark,
+                                            resizeToAvoidBottomInset: false,
+                                            body: SafeArea(
+                                              child: Dismissible(
+                                                  key: const Key('key'),
+                                                  direction: DismissDirection.vertical,
+                                                  onDismissed: (_) =>
+                                                      Navigator.of(context).pop(),
+                                                  child: OrientationBuilder(
+                                                    builder: (context, orientation) {
+                                                      return Center(
+                                                        child: Stack(
+                                                          fit: StackFit.expand,
+                                                          children: [
+                                                            AspectRatio(
+                                                                aspectRatio: _videoPlayerControllers[index].value.aspectRatio,
+                                                                child: Image.file(
+                                                                  fileList[index] as  File,
+                                                                  fit: BoxFit.fitWidth,
+                                                                ),),
+                                                          ],
+                                                        ),
+                                                      );
+                                                    },
+                                                  )),
+                                            ));
+                                      },
+                                    ),
+                                  );
                                 },
+                                    child: Container(
+                                height: screenWidthSize(120, context),
+                                width: screenWidthSize(120, context),
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.rectangle,
+                                    color: Theme.of(context).primaryColor,
+                                ),
+                                child: Image.file(
+                                    fileList[index] as  File,
+                                    fit: BoxFit.fitWidth,
+                                ),
+                              ),
+                                  )
+                                  : InkWell(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .push(
+                                  PageRouteBuilder(
+                                    opaque: false,
+                                    settings: const RouteSettings(),
+                                    pageBuilder: (
+                                        BuildContext context,
+                                        Animation<double> animation,
+                                        Animation<double> secondaryAnimation,
+                                        ) {
+                                      log(index.toString() + '.....................................................');
+                                      return Scaffold(
+                                          backgroundColor: Theme.of(context).primaryColorDark,
+                                          resizeToAvoidBottomInset: false,
+                                          body: SafeArea(
+                                            child: Dismissible(
+                                                key: const Key('key'),
+                                                direction: DismissDirection.vertical,
+                                                onDismissed: (_) =>
+                                                    Navigator.of(context).pop(),
+                                                child: OrientationBuilder(
+                                                  builder: (context, orientation) {
+                                                    return Center(
+                                                      child: Stack(
+                                                        fit: StackFit.expand,
+                                                        children: [
+                                                          AspectRatio(
+                                                              aspectRatio: _videoPlayerControllers[ _isImage.isEmpty ? index :  index + 1 - _isImage.length].value.aspectRatio,
+                                                              child: Chewie(controller: _chewieControllers[_isImage.isEmpty ? index : index + 1 - _isImage.length],)),
+                                                        ],
+                                                      ),
+                                                    );
+                                                  },
+                                                )),
+                                          ));
+                                    },
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                alignment: Alignment.center,
+                                child: wrapController(_videoPlayerControllers[index]),
                               ),
                             );
-                          },
-                          child: Container(
-                            alignment: Alignment.center,
-                            child: wrapController(_videoPlayerControllers[index]),
-                          ),
-                        );
-                      }),
+                          }),
+                    ),
+                  ],
                 ));
       } else {
         return  Center(
@@ -224,7 +235,7 @@ class _WhatsappGalleryState extends State<WhatsappGallery> {
                 padding: const EdgeInsets.only(bottom: 60.0),
                 child: const Text(
                   'Sorry, No Downloads Found!',
-                  style: TextStyle(fontSize: 18.0),
+                  style: TextStyle(fontSize: 18.0,color: Colors.white),
                 )),
           );
       }

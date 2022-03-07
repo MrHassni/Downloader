@@ -77,7 +77,7 @@ class _InstaGalleryState extends State<InstaGallery> {
       return const Center(
         child: Text(
           'Sorry, No Downloads Found!',
-          style: TextStyle(fontSize: 18.0),
+          style: TextStyle(fontSize: 18.0,color: Colors.white),
         ),
       );
     } else {
@@ -144,7 +144,7 @@ class _InstaGalleryState extends State<InstaGallery> {
                 padding: const EdgeInsets.only(bottom: 60.0),
                 child: const Text(
                   'Sorry, No Downloads Found!',
-                  style: TextStyle(fontSize: 18.0,),
+                  style: TextStyle(fontSize: 18.0,color: Colors.white),
                 )),
           );
       }

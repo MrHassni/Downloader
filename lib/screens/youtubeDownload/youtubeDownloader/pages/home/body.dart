@@ -28,7 +28,7 @@ final TextEditingController _urlController = TextEditingController();
   bool _isBannerAdReady = false;
 
   late BannerAd myBanner = BannerAd(
-    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    adUnitId: 'ca-app-pub-1029928460201419/5459665494',
     size: AdSize.	largeBanner,
     request: const AdRequest(),
     listener:  listener,

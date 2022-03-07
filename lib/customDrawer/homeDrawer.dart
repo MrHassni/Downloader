@@ -28,7 +28,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
   bool _isBannerAdReady = false;
 
   late BannerAd myBanner = BannerAd(
-    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    adUnitId: 'ca-app-pub-1029928460201419/5459665494',
     size: AdSize.	largeBanner,
     request: const AdRequest(),
     listener:  listener,
@@ -91,11 +91,11 @@ class _HomeDrawerState extends State<HomeDrawer> {
         labelName: 'Donate Us',
         icon: const Icon(Icons.monetization_on),
       ),
-      DrawerList(
-        index: DrawerIndex.About,
-        labelName: 'About Us',
-        icon: const Icon(Icons.info),
-      ),
+      // DrawerList(
+      //   index: DrawerIndex.About,
+      //   labelName: 'About Us',
+      //   icon: const Icon(Icons.info),
+      // ),
     ];
   }
 
@@ -133,36 +133,41 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                               curve: Curves.fastOutSlowIn))
                                           .value /
                                       360),
-                              child: Container(
-                                height: 120,
-                                width: 120,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  boxShadow: <BoxShadow>[
-                                    BoxShadow(
-                                        color:
-                                            AppTheme.myPurle.withOpacity(0.1),
-                                        blurRadius: 4),
-                                  ],
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(60.0)),
-                                  child:
-                                      Image.asset("assets/images/appLogo.png"),
+                              child: Center(
+                                child: Container(
+                                  height: 120,
+                                  width: 120,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(
+                                          color:
+                                              AppTheme.myPurle.withOpacity(0.1),
+                                          blurRadius: 4),
+                                    ],
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(60.0)),
+                                    child:
+                                        Image.asset("assets/images/appLogo.png"),
+                                  ),
                                 ),
                               ),
                             ),
                           );
                         },
                       ),
-                      const Padding(
-                        padding: EdgeInsets.only(top: 8, left: 4),
-                        child: Text(
-                          "Download",
-                          style: TextStyle(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 18,
+                      const Center(
+                        child: Padding(
+                          padding: EdgeInsets.only(top: 8, left: 4),
+                          child: Text(
+                            "Easy Downloader",
+                            style: TextStyle(
+                              fontFamily: 'Billabong',
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                            ),
                           ),
                         ),
                       ),
@@ -269,12 +274,12 @@ class _HomeDrawerState extends State<HomeDrawer> {
                           height: 24,
                           child: Image.asset(listData.imageName,
                               color: widget.screenIndex == listData.index
-                                  ? Colors.blue
+                                  ? Colors.white
                                   : Theme.of(context).iconTheme.color),
                         )
                       : Icon(listData.icon.icon,
                           color: widget.screenIndex == listData.index
-                              ? Colors.blue
+                              ? Colors.white
                               : Theme.of(context).iconTheme.color),
                   const Padding(
                     padding: EdgeInsets.all(4.0),
@@ -285,7 +290,7 @@ class _HomeDrawerState extends State<HomeDrawer> {
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: widget.screenIndex == listData.index
-                          ? Colors.blue
+                          ? Colors.white
                           : Theme.of(context).iconTheme.color,
                     ),
                     textAlign: TextAlign.left,
@@ -312,13 +317,62 @@ class _HomeDrawerState extends State<HomeDrawer> {
                                 MediaQuery.of(context).size.width * 0.75 - 32,
                             height: 46,
                             decoration: BoxDecoration(
-                              color: Colors.blue.withOpacity(0.2),
+                              color: Theme.of(context).primaryColor,
                               borderRadius: const BorderRadius.only(
                                 topLeft: Radius.circular(0),
                                 topRight: Radius.circular(28),
                                 bottomLeft: Radius.circular(0),
                                 bottomRight: Radius.circular(28),
                               ),
+                            ),
+                            child: Row(
+                              children: <Widget>[
+                                const SizedBox(
+                                  width: 6.0,
+                                  height: 46.0,
+                                  // decoration: BoxDecoration(
+                                  //   color: widget.screenIndex == listData.index
+                                  //       ? Colors.blue
+                                  //       : Colors.transparent,
+                                  //   borderRadius: new BorderRadius.only(
+                                  //     topLeft: Radius.circular(0),
+                                  //     topRight: Radius.circular(16),
+                                  //     bottomLeft: Radius.circular(0),
+                                  //     bottomRight: Radius.circular(16),
+                                  //   ),
+                                  // ),
+                                ),
+                                const Padding(
+                                  padding: EdgeInsets.all(4.0),
+                                ),
+                                listData.isAssetsImage
+                                    ? SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: Image.asset(listData.imageName,
+                                      color: widget.screenIndex == listData.index
+                                          ? Colors.white
+                                          : Theme.of(context).iconTheme.color),
+                                )
+                                    : Icon(listData.icon.icon,
+                                    color: widget.screenIndex == listData.index
+                                        ? Colors.white
+                                        : Theme.of(context).iconTheme.color),
+                                const Padding(
+                                  padding: EdgeInsets.all(4.0),
+                                ),
+                                Text(
+                                  listData.labelName,
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 16,
+                                    color: widget.screenIndex == listData.index
+                                        ? Colors.white
+                                        : Theme.of(context).iconTheme.color,
+                                  ),
+                                  textAlign: TextAlign.left,
+                                ),
+                              ],
                             ),
                           ),
                         ),
@@ -342,7 +396,6 @@ enum DrawerIndex {
   ShareApp,
   RateApp,
   DonateUs,
-  About,
 }
 
 class DrawerList {

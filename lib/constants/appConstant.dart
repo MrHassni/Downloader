@@ -45,22 +45,26 @@ class MyButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
-      elevation: 5,
-      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(15.0) ),
-      color: (color != null) ? color : Theme.of(context).primaryColor,
-      highlightColor: Theme.of(context).accentColor,
-      disabledColor: Theme.of(context).primaryColor,
-      child: Padding(
-        padding: (padding != null)
-            ? padding as EdgeInsetsGeometry
-            : const EdgeInsets.all(15.0),
-        child:
-            FittedBox(child: Text((text != null) ? text.toString() : "Button",style: const TextStyle(
-              color: Colors.white
-            ),)),
+    return SizedBox(
+      width: 125,
+      height: 45,
+      child: MaterialButton(
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(15.0) ),
+        color: (color != null) ? color : Theme.of(context).primaryColor,
+        highlightColor: Theme.of(context).accentColor,
+        disabledColor: Theme.of(context).primaryColor,
+        child: Padding(
+          padding: (padding != null)
+              ? padding as EdgeInsetsGeometry
+              : const EdgeInsets.all(15.0),
+          child:
+              FittedBox(child: Text((text != null) ? text.toString() : "Button",style: const TextStyle(
+                color: Colors.white
+              ),)),
+        ),
+        onPressed: onPressed,
       ),
-      onPressed: onPressed,
     );
   }
 }

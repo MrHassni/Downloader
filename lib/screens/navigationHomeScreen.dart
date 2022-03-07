@@ -135,14 +135,17 @@ class _NavigationHomeScreenState extends State<NavigationHomeScreen> {
           drawerIndex = DrawerIndex.Home;
           screenView = const MyHomePage();
         });
-      } else if (drawerIndex == DrawerIndex.About) {
-        String _donateUrl = 'https://www.linkedin.com/company/rb-sol/';
-        _lauchUrl(_donateUrl);
-        setState(() {
-          drawerIndex = DrawerIndex.Home;
-          screenView = const MyHomePage();
-        });
-      } else {
+      } else
+      //   if (drawerIndex == DrawerIndex.About) {
+      //   String _donateUrl = 'https://www.linkedin.com/company/rb-sol/';
+      //   _lauchUrl(_donateUrl);
+      //   setState(() {
+      //     drawerIndex = DrawerIndex.Home;
+      //     screenView = const MyHomePage();
+      //   });
+      // }
+      //   else
+        {
         //do in your way......
       }
     }

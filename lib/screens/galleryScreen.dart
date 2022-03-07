@@ -82,8 +82,8 @@ class _GalleryScreenState extends State<GalleryScreen> with TickerProviderStateM
               ),
               TabBar(
                 controller: _galleryTabController,
-                indicatorColor: Colors.blue,
-                labelColor: Colors.blue,
+                indicatorColor: Theme.of(context).primaryColor,
+                labelColor: Theme.of(context).primaryColor,
                 unselectedLabelColor: Colors.white,
                 isScrollable: true,
                 tabs: const <Widget>[

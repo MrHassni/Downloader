@@ -34,10 +34,10 @@ class _InstagramDownloadState extends State<InstagramDownload>
   bool _isBannerAdReady = false;
 
   late BannerAd myBanner = BannerAd(
-    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
-    size: AdSize.	largeBanner,
+    adUnitId: 'ca-app-pub-1029928460201419/5459665494',
+    size: AdSize.largeBanner,
     request: const AdRequest(),
-    listener:  listener,
+    listener: listener,
   );
 
   late BannerAdListener listener = BannerAdListener(
@@ -63,54 +63,59 @@ class _InstagramDownloadState extends State<InstagramDownload>
   );
 
   bool isDownloaded = false;
+
   bool validateURL(String urls) {
     String pattern = r'^((http(s)?:\/\/)?((w){3}.)?instagram?(\.com)?\/|).+$';
     RegExp regex = RegExp(pattern);
 
-
-      if (!regex.hasMatch(urls)) {
-        return false;
-      }
+    if (!regex.hasMatch(urls)) {
+      return false;
+    }
 
     return true;
   }
-
-
 
   static Route<Object?> _dialogBuilder(
       BuildContext context, Object? arguments) {
     return DialogRoute<void>(
       context: context,
-      builder: (BuildContext context) =>
-          AlertDialog(title: Column(
-            children: const [
-              Text('Are you sure you wanna exit?',style: TextStyle(fontSize: 15),textAlign: TextAlign.center,),
-              Text('If download is not completed. The progress will lost.',style: TextStyle(fontSize: 11),textAlign: TextAlign.center,),
-            ],
-          ),
-            content : Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                MyButton(
-                  onPressed: (){
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                  },
-                  text: 'Yes',
-                  color: Theme.of(context).primaryColorDark,
-                ),
-                MyButton(
-                  onPressed: (){
-                    Navigator.pop(context);
-                  },
-                  text: 'No',
-
-                )
-              ],
+      builder: (BuildContext context) => AlertDialog(
+        title: Column(
+          children: const [
+            Text(
+              'Are you sure you wanna exit?',
+              style: TextStyle(fontSize: 15),
+              textAlign: TextAlign.center,
             ),
-          ),
-    );}
-
+            Text(
+              'If download is not completed. The progress will lost.',
+              style: TextStyle(fontSize: 11),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+        content: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            MyButton(
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pop(context);
+              },
+              text: 'Yes',
+              color: Theme.of(context).primaryColorDark,
+            ),
+            MyButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              text: 'No',
+            )
+          ],
+        ),
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -124,8 +129,8 @@ class _InstagramDownloadState extends State<InstagramDownload>
 
   Future<String> downloadReels(String link) async {
     var linkEdit = link.replaceAll(" ", "").split("/");
-    var downloadURL = await http.get(Uri.parse(
-        '${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}'
+    var downloadURL = await http.get(
+        Uri.parse('${linkEdit[0]}//${linkEdit[2]}/${linkEdit[3]}/${linkEdit[4]}'
             "/?__a=1"));
     var data = json.decode(downloadURL.body);
     var graphql = data['graphql'];
@@ -138,9 +143,9 @@ class _InstagramDownloadState extends State<InstagramDownload>
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: () async {
-        if(_total == 0 || _total == 100){
+        if (_total == 0 || _total == 100) {
           return true;
-        }else{
+        } else {
           log(_total.toString());
           Navigator.of(context).restorablePush(_dialogBuilder);
           return false;
@@ -204,116 +209,143 @@ class _InstagramDownloadState extends State<InstagramDownload>
                 ),
               ),
               const SizedBox(height: 10),
-              showBar ? Container(
-                height: 150,
-                width: 150,
-                margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width * 0.1),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(10)),
-                  child: LiquidCircularProgressIndicator(
-                    center:  Text('${_total.toStringAsFixed(0)}%',style: const TextStyle(color: Colors.white,fontWeight: FontWeight.bold),),
-                    backgroundColor: Theme.of(context).primaryColor,
-                    // color: Theme.of(context).primaryColorLight,
-                    // minHeight: 15,
-                    // strokeWidth: 10,
-                    value: _total / 100,
-                  ),
-                ),
-              )
-                : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  MyButton(
-                    text: 'PASTE',
-                    onPressed: () async {
-                      Map<String, dynamic> result = await SystemChannels.platform
-                          .invokeMethod('Clipboard.getData');
-                      result['text'] = result['text']
-                          .toString()
-                          .replaceAll(RegExp(r'\?igshid=.*'), '');
-                      result['text'] = result['text']
-                          .toString()
-                          .replaceAll(RegExp(r'https://instagram.com/'), '');
-                      WidgetsBinding.instance!.addPostFrameCallback(
-                        (_) => _urlController.text = result['text']
-                            .toString()
-                            .replaceAll(RegExp(r'\?igshid=.*'), ''),
-                      );
-                    },
-                  ),
-                  MyButton(
-                    text: 'Download',
-                    onPressed: () async {
-                      log("Pressed");
-                      if(validateURL(_urlController.text) == true){
-                        var connectivityResult = await Connectivity().checkConnectivity();
-                        if (connectivityResult == ConnectivityResult.none) {
-                          ScaffoldMessenger.of(context).showSnackBar(mySnackBar(context, 'Check Internet') as SnackBar);
-                          return;
-                        }
-                        var downloadUrl =
-                        await flutterInsta.downloadReels(_urlController.text);
-
-                        log(downloadUrl);
-
-                        String _name =  dir.path + '/instagram' + DateTime.now().millisecondsSinceEpoch.toString() + '.mp4';
-
-                        Dio().download(
-                          downloadUrl,
-                         _name,
-                          onReceiveProgress: (received, total) async {
-                            if (total != -1) {
-                              // print((received / total * 100).toStringAsFixed(0) + "%");
-                              setState(() {
-                                showBar = true;
-                                _total = received / total * 100 ;
-                              });
-
-                              if(received / total * 100 == 100){
-                                setState(() {
-                                  showBar = false;
-                                  ScaffoldMessenger.of(context).showSnackBar(mySnackBar(context, 'Download Completed') as SnackBar);
-                                  _urlController.text = '';
-                                });
-                                  // final thumbnailFile = await VideoCompress.getFileThumbnail(
-                                  //     dir.path + '/instagram' + '27' + '.mp4',
-                                  //     quality: 50, // default(100)
-                                  //     position: -1 // default(-1)
-                                  // );
-
-                                  // setState(() {
-                                  //   newDir = thumbnailFile;
-                                  // });
-
-                                  // log(thumbnailFile.path);
-
-                              }
-                              //you can build progressbar feature too
-                            }
+              showBar
+                  ? Container(
+                      height: 150,
+                      width: 150,
+                      margin: EdgeInsets.symmetric(
+                          horizontal: MediaQuery.of(context).size.width * 0.1),
+                      child: ClipRRect(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        child: LiquidCircularProgressIndicator(
+                          center: Text(
+                            '${_total.toStringAsFixed(0)}%',
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                          backgroundColor: Theme.of(context).primaryColor,
+                          // color: Theme.of(context).primaryColorLight,
+                          // minHeight: 15,
+                          // strokeWidth: 10,
+                          value: _total / 100,
+                        ),
+                      ),
+                    )
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: <Widget>[
+                        MyButton(
+                          text: 'PASTE',
+                          onPressed: () async {
+                            Map<String, dynamic> result = await SystemChannels
+                                .platform
+                                .invokeMethod('Clipboard.getData');
+                            result['text'] = result['text']
+                                .toString()
+                                .replaceAll(RegExp(r'\?igshid=.*'), '');
+                            result['text'] = result['text']
+                                .toString()
+                                .replaceAll(
+                                    RegExp(r'https://instagram.com/'), '');
+                            WidgetsBinding.instance!.addPostFrameCallback(
+                              (_) => _urlController.text = result['text']
+                                  .toString()
+                                  .replaceAll(RegExp(r'\?igshid=.*'), ''),
+                            );
                           },
-                          deleteOnError: true,
-                        );
-                      }else{
-                        log('Add Valid Url');
-                        ScaffoldMessenger.of(context).showSnackBar(mySnackBar(context, 'Add Valid Url') as SnackBar);
-                      }
+                        ),
+                        MyButton(
+                          text: 'Download',
+                          onPressed: () async {
+                            log("Pressed");
+                            if (validateURL(_urlController.text) == true) {
+                              var connectivityResult =
+                                  await Connectivity().checkConnectivity();
+                              if (connectivityResult ==
+                                  ConnectivityResult.none) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    mySnackBar(context, 'Check Internet')
+                                        as SnackBar);
+                                return;
+                              }
+                              var downloadUrl = await flutterInsta
+                                  .downloadReels(_urlController.text);
 
+                              log(downloadUrl);
 
-                      // await FlutterDownloader.enqueue(
-                      //   url: downloadUrl,
-                      //   savedDir: dir.path,
-                      //   fileName: 'instagram' +
-                      //       DateTime.now().millisecond.toString() +
-                      //       ".mp4",
-                      //   showNotification: true,
-                      //   openFileFromNotification: true,
-                      // );
+                              String _name = dir.path +
+                                  '/instagram' +
+                                  DateTime.now()
+                                      .millisecondsSinceEpoch
+                                      .toString() +
+                                  '.mp4';
 
+                              try {
+                                Dio().download(
+                                  downloadUrl,
+                                  _name,
+                                  onReceiveProgress: (received, total) async {
+                                    if (total != -1) {
+                                      // print((received / total * 100).toStringAsFixed(0) + "%");
+                                      setState(() {
+                                        showBar = true;
+                                        _total = received / total * 100;
+                                      });
 
-                    },
-                  )
-                ],
-              ),
+                                      if (received / total * 100 == 100) {
+                                        setState(() {
+                                          showBar = false;
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(mySnackBar(context,
+                                                      'Download Completed')
+                                                  as SnackBar);
+                                          _urlController.text = '';
+                                        });
+                                      }
+                                    }
+                                  },
+                                  deleteOnError: true,
+                                );
+                              } catch (_e) {
+                                log(_e.toString());
+                                AlertDialog(
+                                  title: const Text(
+                                      'Check your internet and try again.'),
+                                  actions: [
+                                    MaterialButton(
+                                      // FlatButton widget is used to make a text to work like a button
+                                      textColor: Colors.black,
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                      // function used to perform after pressing the button
+                                      child: const Text('OK'),
+                                    ),
+                                  ],
+                                );
+                              }
+                            } else {
+                              log('Add Valid Url');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  mySnackBar(context, 'Add Valid Url')
+                                      as SnackBar);
+                            }
+
+                            // await FlutterDownloader.enqueue(
+                            //   url: downloadUrl,
+                            //   savedDir: dir.path,
+                            //   fileName: 'instagram' +
+                            //       DateTime.now().millisecond.toString() +
+                            //       ".mp4",
+                            //   showNotification: true,
+                            //   openFileFromNotification: true,
+                            // );
+                          },
+                        )
+                      ],
+                    ),
               const SizedBox(
                 height: 10,
               ),
@@ -334,13 +366,15 @@ class _InstagramDownloadState extends State<InstagramDownload>
               //   ),
               // )
               //     : Container(),
-              _isBannerAdReady ? Container(
-                margin: const EdgeInsets.only(top: 25),
-                alignment: Alignment.center,
-                child: adWidget,
-                width: myBanner.size.width.toDouble(),
-                height: myBanner.size.height.toDouble(),
-              ) : Container(),
+              _isBannerAdReady
+                  ? Container(
+                      margin: const EdgeInsets.only(top: 25),
+                      alignment: Alignment.center,
+                      child: adWidget,
+                      width: myBanner.size.width.toDouble(),
+                      height: myBanner.size.height.toDouble(),
+                    )
+                  : Container(),
             ],
           ),
         ),

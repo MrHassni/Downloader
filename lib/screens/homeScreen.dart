@@ -101,7 +101,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
   bool _isBannerAdReady = false;
 
   late BannerAd myBanner = BannerAd(
-    adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+    adUnitId: 'ca-app-pub-1029928460201419/5459665494',
     size: AdSize.mediumRectangle,
     request: const AdRequest(),
     listener:  listener,
@@ -132,7 +132,7 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
 
   void createInterstitial(){
     InterstitialAd.load(
-      adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+      adUnitId: 'ca-app-pub-1029928460201419/6333763469',
       request: const AdRequest(),
       adLoadCallback:InterstitialAdLoadCallback(
           onAdLoaded: (InterstitialAd ad){
